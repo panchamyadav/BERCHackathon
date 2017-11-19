@@ -5,6 +5,8 @@
     <h3>Climate Change Tweets from March to October 2017</h3>
     <div id="map"></div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <script>
     // This example creates circles on the map, representing populations in North
 		// America.
@@ -45,6 +47,28 @@ function initMap() {
     zoom: 4,
     center: {lat: 37.090, lng: -95.712},
     mapTypeId: 'terrain'
+  });
+
+  // Display carbon emission cluster data
+  $.ajax({
+    url: 'http://0.0.0.0:8000/carbon',
+    type: 'GET',
+    dataType: "json",
+    complete: function(data) {
+      const points = data.responseJSON['data'];
+      console.log(points.length);
+      const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: us_ctr,
+        });
+      for (var i = 0; i < points.length; i++) {
+        var p = {lat: points[i].lat, lng: points[i].lon};
+        var marker = new google.maps.Marker({
+          position: p,
+          map: map
+        });
+      }
+    }
   });
 
   // Construct the circle for each value in citymap.
