@@ -8,19 +8,32 @@
        }
     </style>
   </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <body>
     <h3>My Google Maps Demo</h3>
     <div id="map"></div>
     <script>
       function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
+        const us_ctr = {lat: 39.8283, lng: -98.5795}
+        $.ajax({
+          url: 'http://0.0.0.0:8000/carbon',
+          type: 'GET',
+          dataType: "json",
+          complete: function(data) {
+            const points = data.responseJSON['data'];
+            console.log(points.length);
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: us_ctr,
+              });
+            for (var i = 0; i < points.length; i++) {
+              var p = {lat: points[i].lat, lng: points[i].lon};
+              var marker = new google.maps.Marker({
+                position: p,
+                map: map
+              });
+            }
+          }
         });
       }
     </script>
