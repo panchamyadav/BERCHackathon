@@ -1,0 +1,10 @@
+#map {
+        height: 400px;
+        width: 100%;
+       }
+
+h3 {
+        color: teal;
+        text-align: center;
+        font-family: Avenir, sans-serif;
+}
